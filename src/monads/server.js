@@ -126,7 +126,11 @@
          return $M(RegisterDefaultMiddlewares)(express)
      }
  
-     const StartListener = config => async express => express.listen(config.rest.port || 8080, () => Print(`Express listening at : ${config.rest.port || 8080}`))
+     const StartListener = config => async express => {                
+               let server = express.listen(config.rest.port || 8080, () => Print(`Express listening at : ${config.rest.port || 8080}`)) 
+               server.keepAliveTimeout = 65000;
+               server.headersTimeout = 66000;
+     }
      return $M(
          Hint('Started HTTP listener................'), StartListener(config),
          Hint('Attached uncaught exception handler..'), RegisterUncaughtExceptionHandler,
